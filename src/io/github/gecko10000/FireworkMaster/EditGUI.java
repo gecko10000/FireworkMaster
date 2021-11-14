@@ -63,7 +63,7 @@ public class EditGUI {
             Player player = (Player) evt.getWhoClicked();
             Task.syncDelayed((Runnable) player::closeInventory);
             ChatPrompt.prompt(player,
-                    ChatColor.GREEN + "Enter the name for the firework.",
+                    ChatColor.GREEN + "Enter the name for the firework, or \"cancel\" to cancel.",
                     response -> enterEditMode(player, response).thenAccept(f -> {
                         if (f != null) {
                             plugin.fireworks.put(f.name, f);
@@ -80,7 +80,7 @@ public class EditGUI {
         }));
         gui.addButton(size - 4, ItemButton.create(nextButton, evt -> panel.nextPage()));
         panel.addSlots(0, size - 9);
-        update();
+        Task.syncDelayed(this::update);
     }
 
     public void open(Player player) {
@@ -98,7 +98,7 @@ public class EditGUI {
         ItemStack firework = new ItemStack(Material.FIREWORK_ROCKET);
         firework.setItemMeta(object.meta);
         ItemStack finalFirework = new ItemBuilder(firework)
-                .setName(object.name)
+                .setName(ChatColor.WHITE + object.name)
                 .setLore("", ChatColor.AQUA + "Instant: " + object.instant, "",
                         ChatColor.YELLOW + "Left click to set the firework item",
                         ChatColor.YELLOW + "Right click to toggle instant explosion",
@@ -110,11 +110,11 @@ public class EditGUI {
                 case RIGHT -> object.instant = !object.instant;
                 case LEFT -> {
                     Player player = (Player) evt.getWhoClicked();
+                    player.sendMessage(ChatColor.GREEN + "Enter the name for the firework, or \"cancel\" to cancel.");
                     enterEditMode(player, object.name).thenAccept(f -> {
                         if (f != null) {
                             plugin.fireworks.put(f.name, f);
                             update();
-                            plugin.config.save();
                         }
                         gui.open(player);
                     });
@@ -122,10 +122,10 @@ public class EditGUI {
                 case SHIFT_LEFT, SHIFT_RIGHT -> {
                     plugin.fireworks.remove(object.name);
                     update();
-                    plugin.config.save();
                 }
             }
             update();
+            plugin.config.save();
         });
     }
 

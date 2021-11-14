@@ -10,7 +10,7 @@ import java.util.Map;
 public class FireworkMaster extends JavaPlugin {
 
     @ConfigValue
-    public Map<String, FireworkObject> fireworks = new HashMap<>();
+    public Map<String, FireworkObject> fireworks = ConfigManager.map(FireworkObject.class);
     public ConfigManager config;
     public EditGUI editGUI;
 

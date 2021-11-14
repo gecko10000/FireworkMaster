@@ -1,0 +1,24 @@
+fireworkmaster,fm {
+    permission fireworkmaster.command
+    reload {
+        permission fireworkmaster.reload
+        help Reload the config
+        hook reload
+    }
+    edit {
+        permission fireworkmaster.edit
+        help Open the GUI for editing
+        hook edit
+        user player
+    }
+    launch firework:firework player:target {
+        permission fireworkmaster.launch
+        help Launch a firework at a player's location
+        hook launchPlayer
+    }
+    launch firework:firework world:world double:x double:y double:z {
+        permission fireworkmaster.launch
+        help Launch a firework at the specified location
+        hook launchLocation
+    }
+}

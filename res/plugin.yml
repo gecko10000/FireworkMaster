@@ -1,0 +1,6 @@
+name: FireworkMaster
+main: io.github.gecko10000.FireworkMaster.FireworkMaster
+version: 0.1
+api-version: 1.13
+depend:
+  - RedLib
